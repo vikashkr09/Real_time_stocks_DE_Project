@@ -105,15 +105,13 @@ real-time-stocks-pipeline/
 - Created DAG (`stock_pipeline_dag.py`) to:
   - Load data from MinIO into **Snowflake staging tables** (Bronze).
   - Schedule automated runs every **1 minute**.
-- [Airflow DAGs](dag/minio_to_snowflake.py)
+- [Airflow DAGs](dags/minio_to_snowflake.py)
 
 ---
 
 ### **5. Snowflake Warehouse Setup**
 - Created **Snowflake database, schema, and warehouse**.
 - Defined staging tables for **Bronze → Silver → Gold** layers.
-- SQL scripts available at:
-  - [Snowflake Setup](snowflake/sql_init.sql)
 
 ---
 
