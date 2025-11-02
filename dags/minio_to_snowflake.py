@@ -15,12 +15,6 @@ MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
 BUCKET = os.getenv("MINIO_BUCKET", "bronze-transactions")
 LOCAL_DIR = "/tmp/minio_downloads"  # use absolute path for Airflow
 
-SNOWFLAKE_USER = "SNOWPRACTICE"
-SNOWFLAKE_PASSWORD = "Snowflake@2025"
-SNOWFLAKE_ACCOUNT = "TXYZFHL-YA76553"
-SNOWFLAKE_WAREHOUSE = "COMPUTE_WH"
-SNOWFLAKE_DB = "STOCKS_MDS"
-SNOWFLAKE_SCHEMA = "COMMON"
 
 def download_from_minio():
     os.makedirs(LOCAL_DIR, exist_ok=True)
@@ -54,6 +48,7 @@ def load_to_snowflake(**kwargs):
     database=os.getenv("SNOWFLAKE_DB"),
     schema=os.getenv("SNOWFLAKE_SCHEMA")
     )
+
     cur = conn.cursor()
 
     for f in local_files:
