@@ -4,11 +4,15 @@ import snowflake.connector
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
-MINIO_ENDPOINT = "http://minio:9000"
-MINIO_ACCESS_KEY = "admin"
-MINIO_SECRET_KEY = "password123"
-BUCKET = "bronze-transactions"
+# Load environment variables
+load_dotenv()
+
+MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT")
+MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY")
+MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY")
+BUCKET = os.getenv("MINIO_BUCKET", "bronze-transactions")
 LOCAL_DIR = "/tmp/minio_downloads"  # use absolute path for Airflow
 
 SNOWFLAKE_USER = "SNOWPRACTICE"
@@ -43,12 +47,12 @@ def load_to_snowflake(**kwargs):
         return
 
     conn = snowflake.connector.connect(
-        user=SNOWFLAKE_USER,
-        password=SNOWFLAKE_PASSWORD,
-        account=SNOWFLAKE_ACCOUNT,
-        warehouse=SNOWFLAKE_WAREHOUSE,
-        database=SNOWFLAKE_DB,
-        schema=SNOWFLAKE_SCHEMA
+    user=os.getenv("SNOWFLAKE_USER"),
+    password=os.getenv("SNOWFLAKE_PASSWORD"),
+    account=os.getenv("SNOWFLAKE_ACCOUNT"),
+    warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
+    database=os.getenv("SNOWFLAKE_DB"),
+    schema=os.getenv("SNOWFLAKE_SCHEMA")
     )
     cur = conn.cursor()
 
